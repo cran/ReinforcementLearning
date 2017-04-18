@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Nicolas Proellochs" />
+
+<meta name="date" content="2017-04-18" />
+
+<title>Reinforcement Learning in R</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Reinforcement Learning in R</h1>
+<h4 class="author"><em>Nicolas Proellochs</em></h4>
+<h4 class="date"><em>2017-04-18</em></h4>
+
+
+
+<p>This vignette gives a short introduction to the <code>ReinforcementLearning</code> package, which allows one to perform model-free reinforcement in <em>R</em>. The implementation uses input data in the form of sample sequences consisting of states, actions and rewards. Based on such training examples, the package allows a reinforcement learning agent to learn an optimal policy that defines the best possible action in each state. In the following sections, we present multiple step-by-step examples to illustrate how to take advantage of the capabilities of the <code>ReinforcementLearning</code> package. Moreover, we present methods to customize the learning and action selection behavior of the agent. Main features of <code>ReinforcementLearning</code> include, but are not limited to,</p>
+<ul>
+<li>Learning an optimal policy from a fixed set of a priori known transition samples</li>
+<li>Predefined learning rules and action selection modes</li>
+<li>A highly customizable framework for model-free reinforcement learning tasks</li>
+</ul>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>Reinforcement learning refers to the problem of an agent that aims to learn optimal behavior through trial-and-error interactions with a dynamic environment. All algorithms for reinforcement learning share the property that the feedback of the agent is restricted to a reward signal that indicates how well the agent is behaving. In contrast to supervised machine learning methods, any instruction concerning how to improve its behavior is absent. Thus, the goal and challenge of reinforcement learning is to improve the behavior of an agent given only this limited type of feedback.</p>
+<div id="the-reinforcement-learning-problem" class="section level2">
+<h2>The reinforcement learning problem</h2>
+<p>In reinforcement learning, the decision-maker, i.e. the agent, interacts with an environment over a sequence of observations and seeks a reward to be maximized over time. Formally, the model consists of a finite set of environment states <span class="math inline">\(S\)</span>, a finite set of agent actions <span class="math inline">\(A\)</span>, and a set of scalar reinforcement signals (i.e. rewards) <span class="math inline">\(R\)</span>. At each iteration <span class="math inline">\(i\)</span>, the agent observes some representation of the environment’s state <span class="math inline">\(s_i \in S\)</span>. On that basis, the agent selects an action <span class="math inline">\(a_i \in A(s_i)\)</span>, where <span class="math inline">\(A(s_i) \subseteq A\)</span> denotes the set of actions available in state <span class="math inline">\(s_i\)</span>. After each iteration, the agent receives a numerical reward <span class="math inline">\(r_{i+1} \in R\)</span> and observes a new state <span class="math inline">\(s_{i+1}\)</span>.</p>
+</div>
+<div id="policy-learning" class="section level2">
+<h2>Policy learning</h2>
+<p>In order to store current knowledge, the reinforcement learning method introduces a so-called state-action function <span class="math inline">\(Q(s_i,a_i)\)</span>, which defines the expected value of each possible action <span class="math inline">\(a_i\)</span> in each state <span class="math inline">\(s_i\)</span>. If <span class="math inline">\(Q(s_i,a_i)\)</span> is known, then the optimal policy <span class="math inline">\(\pi^*(s_i,a_i)\)</span> is given by the action <span class="math inline">\(a_i\)</span>, which maximizes <span class="math inline">\(Q(s_i,a_i)\)</span> given the state <span class="math inline">\(s_i\)</span>. Consequently, the learning problem of the agent is to maximize the expected reward by learning an optimal policy function <span class="math inline">\(\pi^*(s_i,a_i)\)</span>.</p>
+</div>
+<div id="experience-replay" class="section level2">
+<h2>Experience replay</h2>
+<p>Experience replay allows reinforcement learning agents to remember and reuse experiences from the past. The underlying idea is to speed up convergence by replaying observed state transitions repeatedly to the agent, as if they were new observations collected while interacting with a system. Hence, experience replay only requires input data in the form of sample sequences consisting of states, actions and rewards. These data points can be, for example, collected from a running system without the need for direct interaction. The stored training examples then allow the agent to learn a state-action function and an optimal policy for every state transition in the input data. In a next step, the policy can be applied to the system for validation purposes or to collect new data points (e.g. in order to iteratively improve the current policy). As its main advantage, experience replay can speed up convergence by allowing for the back-propagation of information from updated states to preceding states without further interaction.</p>
+</div>
+</div>
+<div id="setup-of-the-reinforcementlearning-package" class="section level1">
+<h1>Setup of the ReinforcementLearning package</h1>
+<p>Even though reinforcement learning has recently gained a great deal of traction in studies that perform human-like learning, the available tools are not living up to the needs of researchers and practitioners. The <code>ReinforcementLearning</code> package is intended to partially close this gap and offers the ability to perform model-free reinforcement learning in a highly customizable framework.</p>
+<div id="installation" class="section level2">
+<h2>Installation</h2>
+<p>Using the <code>devtools</code> package, one can easily install the latest development version of <code>ReinforcementLearning</code> as follows.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages(&quot;devtools&quot;)</span>
+
+<span class="co"># Option 1: download and install latest version from GitHub</span>
+devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;nproellochs/ReinforcementLearning&quot;</span>)
+
+<span class="co"># Option 2: install directly from bundled archive</span>
+devtoos<span class="op">::</span><span class="kw">install_local</span>(<span class="st">&quot;ReinforcementLearning_1.0.0.tar.gz&quot;</span>)</code></pre></div>
+</div>
+<div id="package-loading" class="section level2">
+<h2>Package loading</h2>
+<p>Afterwards, one merely needs to load the <code>ReinforcementLearning</code> package as follows.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ReinforcementLearning)</code></pre></div>
+</div>
+</div>
+<div id="usage" class="section level1">
+<h1>Usage</h1>
+<p>The following sections present the usage and main functionality of the <code>ReinforcementLearning</code> package.</p>
+<div id="data-format" class="section level2">
+<h2>Data format</h2>
+<p>The <code>ReinforcementLearning</code> package uses experience replay to learn an optimal policy based on past experience in the form of sample sequences consisting of states, actions and rewards. Here each training example consists of a state transition tuple <em>(s,a,r,s_new)</em>, as described ibelow.</p>
+<ul>
+<li><strong>s</strong> The current environment state.</li>
+<li><strong>a</strong> The selected action in the current state.</li>
+<li><strong>r</strong> The immediate reward received after transitioning from the current state to the next state.</li>
+<li><strong>s_new</strong> The next environment state.</li>
+</ul>
+<p>Note:</p>
+<ul>
+<li>The input data must be a dataframe in which each row represents a state transition tuple <em>(s,a,r,s_new)</em>.</li>
+</ul>
+</div>
+<div id="read-in-sample-experience" class="section level2">
+<h2>Read-in sample experience</h2>
+<p>The state transition tuples can be collected from an external source and easily read-in into <em>R</em>. The sample experience can then be used to train a reinforcement learning agent without requiring further interaction with the environment. The following example shows a representative dataset containing game states of 100,000 randomly sampled Tic-Tac-Toe games.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&quot;tictactoe&quot;</span>)
+<span class="kw">head</span>(tictactoe, <span class="dv">5</span>)</code></pre></div>
+<pre><code>##       State Action NextState Reward
+## 1 .........     c7 ......X.B      0
+## 2 ......X.B     c6 ...B.XX.B      0
+## 3 ...B.XX.B     c2 .XBB.XX.B      0
+## 4 .XBB.XX.B     c8 .XBBBXXXB      0
+## 5 .XBBBXXXB     c1 XXBBBXXXB      0</code></pre>
+</div>
+<div id="experience-sampling-using-an-environment-function" class="section level2">
+<h2>Experience sampling using an environment function</h2>
+<p>The <code>ReinforcementLearning</code> package is shipped with the built-in capability to sample experience from a function that defines the dynamics of the environment. If the the dynamics of the environment are known a priori, one can set up an arbitrary complex environment function in <em>R</em> and sample state transition tuples. This function has to be manually implemented and must take a state and an action as input. The return value must be a list containing the name of the next state and the reward. As a main advantage, this method of experience sampling allows one to easily validate the performance of reinforcement learning, by applying the learned policy to newly generated samples.</p>
+<pre><code>environment &lt;- function(state, action) {
+  ...
+  return(list(&quot;NextState&quot; = newState,
+              &quot;Reward&quot; = reward))
+}</code></pre>
+<p>The following example illustrates how to generate sample experience using an environment function. Here we collect experience from an agent that navigates from a random starting position to a goal position on a simulated 2x2 grid (see figure below).</p>
+<p>|———–|<br />
+| s1 | s4 |<br />
+| s2   s3 |<br />
+|———–|</p>
+<p>Each cell on the grid represents one state, which yields a total of 4 states. The grid is surrounded by a wall, which makes it impossible for the agent to move off the grid. In addition, the agent faces a wall between s1 and s4. At each state, the agent randomly chooses one out of four possible actions, i. e. to move up, down, left, or right. The agent encounters the following reward structure: Crossing each square on the grid leads to a reward of -1. If the agent reaches the goal position, it earns a reward of 10.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Load exemplary environment (gridworld)</span>
+env &lt;-<span class="st"> </span>gridworldEnvironment
+<span class="kw">print</span>(env)</code></pre></div>
+<pre><code>## function (state, action) 
+## {
+##     next_state &lt;- state
+##     if (state == state(&quot;s1&quot;) &amp;&amp; action == &quot;down&quot;) 
+##         next_state &lt;- state(&quot;s2&quot;)
+##     if (state == state(&quot;s2&quot;) &amp;&amp; action == &quot;up&quot;) 
+##         next_state &lt;- state(&quot;s1&quot;)
+##     if (state == state(&quot;s2&quot;) &amp;&amp; action == &quot;right&quot;) 
+##         next_state &lt;- state(&quot;s3&quot;)
+##     if (state == state(&quot;s3&quot;) &amp;&amp; action == &quot;left&quot;) 
+##         next_state &lt;- state(&quot;s2&quot;)
+##     if (state == state(&quot;s3&quot;) &amp;&amp; action == &quot;up&quot;) 
+##         next_state &lt;- state(&quot;s4&quot;)
+##     if (next_state == state(&quot;s4&quot;) &amp;&amp; state != state(&quot;s4&quot;)) {
+##         reward &lt;- 10
+##     }
+##     else {
+##         reward &lt;- -1
+##     }
+##     out &lt;- list(NextState = next_state, Reward = reward)
+##     return(out)
+## }
+## &lt;environment: namespace:ReinforcementLearning&gt;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Define state and action sets</span>
+states &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;s1&quot;</span>, <span class="st">&quot;s2&quot;</span>, <span class="st">&quot;s3&quot;</span>, <span class="st">&quot;s4&quot;</span>)
+actions &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;up&quot;</span>, <span class="st">&quot;down&quot;</span>, <span class="st">&quot;left&quot;</span>, <span class="st">&quot;right&quot;</span>)
+
+<span class="co"># Sample N = 1000 random sequences from the environment</span>
+data &lt;-<span class="st"> </span><span class="kw">sampleExperience</span>(<span class="dt">N =</span> <span class="dv">1000</span>, <span class="dt">env =</span> env, <span class="dt">states =</span> states, <span class="dt">actions =</span> actions)
+<span class="kw">head</span>(data)</code></pre></div>
+<pre><code>##   State Action Reward NextState
+## 1    s4   left     -1        s4
+## 2    s2  right     -1        s3
+## 3    s2  right     -1        s3
+## 4    s3   left     -1        s2
+## 5    s4     up     -1        s4
+## 6    s1   down     -1        s2</code></pre>
+</div>
+<div id="performing-reinforcement-learning" class="section level2">
+<h2>Performing reinforcement learning</h2>
+<p>The following example shows how to teach a reinforcement learning agent using input data in the form of sample sequences consisting of states, actions and rewards. The ‘data’ argument must be a dataframe object in which each row represents a state transition tuple <em>(s,a,r,s_new)</em>. Moreover, the user is required to specify the column names of the individual tuple elements in ‘data’.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Define reinforcement learning parameters</span>
+control &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">alpha =</span> <span class="fl">0.1</span>, <span class="dt">gamma =</span> <span class="fl">0.5</span>, <span class="dt">epsilon =</span> <span class="fl">0.1</span>)
+
+<span class="co"># Perform reinforcement learning</span>
+model &lt;-<span class="st"> </span><span class="kw">ReinforcementLearning</span>(data, <span class="dt">s =</span> <span class="st">&quot;State&quot;</span>, <span class="dt">a =</span> <span class="st">&quot;Action&quot;</span>, <span class="dt">r =</span> <span class="st">&quot;Reward&quot;</span>, 
+                               <span class="dt">s_new =</span> <span class="st">&quot;NextState&quot;</span>, <span class="dt">control =</span> control)
+
+<span class="co"># Print result</span>
+<span class="kw">print</span>(model)</code></pre></div>
+<pre><code>## State-Action function Q
+##         right         up       down       left
+## s1 -0.6633782 -0.6687457  0.7512191 -0.6572813
+## s2  3.5806843 -0.6893860  0.7760491  0.7394739
+## s3  3.5702779  9.1459425  3.5765323  0.6844573
+## s4 -1.8005634 -1.8567931 -1.8244368 -1.8377018
+## 
+## Policy
+##      s1      s2      s3      s4 
+##  &quot;down&quot; &quot;right&quot;    &quot;up&quot; &quot;right&quot; 
+## 
+## Reward (last iteration)
+## [1] -263</code></pre>
+<p>The result of the learning process is a state-action table and an optimal policy that defines the best possible action in each state.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Print policy</span>
+<span class="kw">policy</span>(model)</code></pre></div>
+<pre><code>##      s1      s2      s3      s4 
+##  &quot;down&quot; &quot;right&quot;    &quot;up&quot; &quot;right&quot;</code></pre>
+</div>
+<div id="updating-an-existing-policy" class="section level2">
+<h2>Updating an existing policy</h2>
+<p>Specifying an environment function to model the dynamics of the environment allows one to easily validate the performance of the agent. In order to do this, one simply applies the learned policy to newly generated samples. For this purpose, the <code>ReinforcementLearning</code> package comes with an additional predefined action selection mode, namely ‘epsilon-greedy’. In this strategy, the agent explores the environment by selecting an action at random with probability <span class="math inline">\(1-\epsilon\)</span>. Alternatively, the agent exploits its current knowledge by choosing the optimal action with probability <span class="math inline">\(1-\epsilon\)</span>.</p>
+<p>The following example shows how to sample new experience from an existing policy using ‘epsilon-greedy’ action selection. The result is new state transition samples (‘data_new’) with significantly higher rewards compared to the the original sample (‘data’).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Define reinforcement learning parameters</span>
+control &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">alpha =</span> <span class="fl">0.1</span>, <span class="dt">gamma =</span> <span class="fl">0.5</span>, <span class="dt">epsilon =</span> <span class="fl">0.1</span>)
+
+<span class="co"># Sample N = 1000 sequences from the environment using epsilon-greedy action selection</span>
+data_new &lt;-<span class="st"> </span><span class="kw">sampleExperience</span>(<span class="dt">N =</span> <span class="dv">1000</span>, <span class="dt">env =</span> env, <span class="dt">states =</span> states, <span class="dt">actions =</span> actions, 
+                             <span class="dt">model =</span> model, <span class="dt">actionSelection =</span> <span class="st">&quot;epsilon-greedy&quot;</span>, 
+                             <span class="dt">control =</span> control)
+<span class="kw">head</span>(data_new)</code></pre></div>
+<pre><code>##   State Action Reward NextState
+## 1    s2  right     -1        s3
+## 2    s4  right     -1        s4
+## 3    s4  right     -1        s4
+## 4    s4  right     -1        s4
+## 5    s2  right     -1        s3
+## 6    s1   down     -1        s2</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Update the existing policy using new training data</span>
+model_new &lt;-<span class="st"> </span><span class="kw">ReinforcementLearning</span>(data_new, <span class="dt">s =</span> <span class="st">&quot;State&quot;</span>, <span class="dt">a =</span> <span class="st">&quot;Action&quot;</span>, <span class="dt">r =</span> <span class="st">&quot;Reward&quot;</span>, 
+                                   <span class="dt">s_new =</span> <span class="st">&quot;NextState&quot;</span>, <span class="dt">control =</span> control, <span class="dt">model =</span> model)
+
+<span class="co"># Print result</span>
+<span class="kw">print</span>(model_new)</code></pre></div>
+<pre><code>## State-Action function Q
+##        right         up       down       left
+## s1 -0.643587 -0.6320560  0.7657318 -0.6314927
+## s2  3.530829 -0.6407675  0.7714129  0.7427914
+## s3  3.548196  9.0608344  3.5521760  0.7382102
+## s4 -1.939574 -1.8922783 -1.8835278 -1.8856132
+## 
+## Policy
+##      s1      s2      s3      s4 
+##  &quot;down&quot; &quot;right&quot;    &quot;up&quot;  &quot;down&quot; 
+## 
+## Reward (last iteration)
+## [1] 1211</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(model_new)</code></pre></div>
+<pre><code>## 
+## Model details
+## Learning rule:           experienceReplay
+## Learning iterations:     2
+## Number of states:        4
+## Number of actions:       4
+## Total Reward:            1211
+## 
+## Reward details (per iteration)
+## Min:                     -263
+## Max:                     1211
+## Average:                 474
+## Median:                  474
+## Standard deviation:      1042.275</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Plot reinforcement learning curve</span>
+<span class="kw">plot</span>(model_new)</code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+</div>
+<div id="parameter-configuration" class="section level1">
+<h1>Parameter configuration</h1>
+<p>The <code>ReinforcementLearning</code> package allows for the adjustment of the following parameters in order to customize the learning behavior of the agent.</p>
+<ul>
+<li><strong>alpha</strong> The learning rate, set between 0 and 1. Setting it to 0 means that the Q-values are never updated and, hence, nothing is learned. Setting a high value, such as 0.9, means that learning can occur quickly.</li>
+<li><strong>gamma</strong> Discount factor, set between 0 and 1. Determines the importance of future rewards. A factor of 0 will render the agent short-sighted by only considering current rewards, while a factor approaching 1 will cause it to strive for a greater reward over the long term.</li>
+<li><strong>epsilon</strong> Exploration parameter, set between 0 and 1. Defines the exploration mechanism in <span class="math inline">\(\epsilon\)</span>-greedy action selection. In this strategy, the agent explores the environment by selecting an action at random with probability <span class="math inline">\(\epsilon\)</span>. Alternatively, the agent exploits its current knowledge by choosing the optimal action with probability <span class="math inline">\(1-\epsilon\)</span>. This parameter is only required for sampling new experience based on an existing policy.</li>
+<li><strong>iter</strong> Number of repeated learning iterations. Iter is an integer greater than 0. The default is set to 1.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Define control object</span>
+control &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">alpha =</span> <span class="fl">0.1</span>, <span class="dt">gamma =</span> <span class="fl">0.1</span>, <span class="dt">epsilon =</span> <span class="fl">0.1</span>)
+
+<span class="co"># Pass learning parameters to reinforcement learning function</span>
+model &lt;-<span class="st"> </span><span class="kw">ReinforcementLearning</span>(data, <span class="dt">iter =</span> <span class="dv">10</span>, <span class="dt">control =</span> control)</code></pre></div>
+</div>
+<div id="working-example-learning-tic-tac-toe" class="section level1">
+<h1>Working example: Learning Tic-Tac-Toe</h1>
+<p>The following example shows the use of <code>ReinforcementLearning</code> in an applied setting. More precisely, we utilize a dataset containing 406,541 game states of Tic-Tac-Toe to learn the optimal actions for each state of the board.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Load dataset</span>
+<span class="kw">data</span>(<span class="st">&quot;tictactoe&quot;</span>)
+
+<span class="co"># Define reinforcement learning parameters</span>
+control &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">alpha =</span> <span class="fl">0.2</span>, <span class="dt">gamma =</span> <span class="fl">0.4</span>, <span class="dt">epsilon =</span> <span class="fl">0.1</span>)
+
+<span class="co"># Perform reinforcement learning</span>
+model &lt;-<span class="st"> </span><span class="kw">ReinforcementLearning</span>(tictactoe, <span class="dt">s =</span> <span class="st">&quot;State&quot;</span>, <span class="dt">a =</span> <span class="st">&quot;Action&quot;</span>, <span class="dt">r =</span> <span class="st">&quot;Reward&quot;</span>, 
+                               <span class="dt">s_new =</span> <span class="st">&quot;NextState&quot;</span>, <span class="dt">iter =</span> <span class="dv">1</span>, <span class="dt">control =</span> control)
+
+<span class="co"># Print optimal policy</span>
+<span class="kw">policy</span>(model)</code></pre></div>
+<p>Notes:</p>
+<ul>
+<li>All states are observed from the perspective of player X, who is also assumed to have played first.</li>
+<li>The player who succeeds in placing three of their marks in a horizontal, vertical, or diagonal row wins the game. Reward for player X is +1 for ‘win’, 0 for ‘draw’, and -1 for ‘loss’.</li>
+</ul>
+<div id="license" class="section level2">
+<h2>License</h2>
+<p><strong>ReinforcementLearning</strong> is released under the <a href="https://opensource.org/licenses/MIT">MIT License</a></p>
+<p>Copyright (c) 2017 Nicolas Pröllochs &amp; Stefan Feuerriegel</p>
+</div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
