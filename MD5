@@ -1,8 +1,8 @@
-1196edd078ac4688e3060ec3a16bda81 *DESCRIPTION
+896dc388186a8850f3e9ed91b0896d52 *DESCRIPTION
 341fcceaa3b970d15f6e6533f0efcbb9 *LICENSE
 6c22ae731b94bf4754ee23ad8cb740ef *NAMESPACE
-c8f4eb434a87aac8c5479eefa1122f3d *NEWS.md
-c2435d1e9f66e864c8a5816949720d6a *R/ReinforcementLearning.R
+3c48fb91ee6136687469e719b79ebfcf *NEWS.md
+7c636d4f5a00982ccef7eaf467b2a0aa *R/ReinforcementLearning.R
 3e71713a3d317c15e7c48b298b71d3b5 *R/actionSelection.R
 b4f3c6a6324e470c7b705a5a5ed538ee *R/data.R
 6187a491631401f6d373e1b0c6f6c753 *R/experienceReplay.R
@@ -11,12 +11,12 @@ b4f3c6a6324e470c7b705a5a5ed538ee *R/data.R
 53764b8add16eb78a69e514fb4f48e5a *R/policy.R
 1ecd48549c8dbf68463d601fcf8cf89d *R/sampleExperience.R
 f9b3c73cc028a1e74a431fe339c19641 *R/state.R
-26b8dbaebe11b86f49daf41bd752c01f *README.md
-118ee6288b993590ab8081610d95737e *build/vignette.rds
+287a74f9da296625ebdda83b20a0252c *README.md
+08e1614c6182d2d4391301e784009177 *build/vignette.rds
 7ed7fc625914f47b4ea9d189beb80e48 *data/tictactoe.rda
 be03749d4f1ba6855fef6d96be9c4bc0 *inst/doc/ReinforcementLearning.R
-bbd454e927a63728210edbd3d507b8d8 *inst/doc/ReinforcementLearning.Rmd
-02eb9c40d046b723481e313d3bf4e2fd *inst/doc/ReinforcementLearning.html
+8b9e702d7c086836ddc5f5e499533c3d *inst/doc/ReinforcementLearning.Rmd
+cb7396bdb8c9cba76c5b97757482d4f5 *inst/doc/ReinforcementLearning.html
 e410ad7176427e07b509c09bb016fc95 *man/ReinforcementLearning.Rd
 c2d784f04c15c5e4e14b45e1860c7214 *man/epsilonGreedyActionSelection.Rd
 22e290bc0031741f5ed935d2f99c360f *man/experienceReplay.Rd
@@ -37,4 +37,4 @@ f54143af982b8272c386fc18d54f696e *tests/testthat/test.ReinforcementLearning.R
 30c8be27d5d9a7aa8367f0aac20e8aee *tests/testthat/test.policy.R
 a6355876ad4a6b9dafcdd9ffffe81ecf *tests/testthat/test.sampleExperience.R
 2cdbdfeac9c1b18d5174a100afb27d1b *tests/testthat/test.state.R
-bbd454e927a63728210edbd3d507b8d8 *vignettes/ReinforcementLearning.Rmd
+8b9e702d7c086836ddc5f5e499533c3d *vignettes/ReinforcementLearning.Rmd
