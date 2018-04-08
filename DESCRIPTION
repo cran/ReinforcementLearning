@@ -1,11 +1,11 @@
 Package: ReinforcementLearning
 Type: Package
 Title: Model-Free Reinforcement Learning
-Version: 1.0.1
-Date: 2017-05-30
+Version: 1.0.2
+Date: 2018-04-07
 Authors@R: c(person("Nicolas", "Proellochs", email="nicolas.proellochs@is.uni-freiburg.de",
                     role=c("aut", "cre")),
-             person("Stefan", "Feuerriegel", email="stefan.feuerriegel@is.uni-freiburg.de",
+             person("Stefan", "Feuerriegel", email="sfeuerriegel@ethz.ch",
                     role=c("aut")))
 Maintainer: Nicolas Proellochs <nicolas.proellochs@is.uni-freiburg.de>
 Description: Performs model-free reinforcement learning in R. This implementation enables the learning
@@ -20,8 +20,8 @@ LazyData: TRUE
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2017-06-19 10:11:23 UTC; Nic
+Packaged: 2018-04-08 15:08:51 UTC; nproe
 Author: Nicolas Proellochs [aut, cre],
   Stefan Feuerriegel [aut]
 Repository: CRAN
-Date/Publication: 2017-06-19 10:20:49 UTC
+Date/Publication: 2018-04-08 15:19:35 UTC
