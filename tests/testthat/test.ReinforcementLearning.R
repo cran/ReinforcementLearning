@@ -28,6 +28,11 @@ test_that("Reinforcement learning performs correctly", {
                                      s_new = "NextState", iter = 2.4))
   expect_error(ReinforcementLearning(data, s = "State", a = "Action", r = "Reward",
                                      s_new = "NextState", iter = -1))
+
+  data_na <- data
+  data_na$Reward[1] <- NA
+  expect_error(ReinforcementLearning(data_na, s = "State", a = "Action", r = "Reward",
+                                     s_new = "NextState", control = control))
 })
 
 test_that("Policy updating performs correctly", {

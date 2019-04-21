@@ -12,7 +12,7 @@
 
 <meta name="author" content="Nicolas Proellochs" />
 
-<meta name="date" content="2018-04-08" />
+<meta name="date" content="2019-04-21" />
 
 <title>Reinforcement Learning in R</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Reinforcement Learning in R</h1>
 <h4 class="author"><em>Nicolas Proellochs</em></h4>
-<h4 class="date"><em>2018-04-08</em></h4>
+<h4 class="date"><em>2019-04-21</em></h4>
 
 
 
@@ -105,10 +105,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages(&quot;devtools&quot;)</span>
 
 <span class="co"># Option 1: download and install latest version from GitHub</span>
-devtools::<span class="kw">install_github</span>(<span class="st">&quot;nproellochs/ReinforcementLearning&quot;</span>)
+devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;nproellochs/ReinforcementLearning&quot;</span>)
 
 <span class="co"># Option 2: install directly from bundled archive</span>
-devtoos::<span class="kw">install_local</span>(<span class="st">&quot;ReinforcementLearning_1.0.0.tar.gz&quot;</span>)</code></pre></div>
+devtoos<span class="op">::</span><span class="kw">install_local</span>(<span class="st">&quot;ReinforcementLearning_1.0.0.tar.gz&quot;</span>)</code></pre></div>
 </div>
 <div id="package-loading" class="section level2">
 <h2>Package loading</h2>
@@ -184,6 +184,7 @@ env &lt;-<span class="st"> </span>gridworldEnvironment
 ##     out &lt;- list(NextState = next_state, Reward = reward)
 ##     return(out)
 ## }
+## &lt;bytecode: 0x0000000015900608&gt;
 ## &lt;environment: namespace:ReinforcementLearning&gt;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Define state and action sets</span>
 states &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;s1&quot;</span>, <span class="st">&quot;s2&quot;</span>, <span class="st">&quot;s3&quot;</span>, <span class="st">&quot;s4&quot;</span>)

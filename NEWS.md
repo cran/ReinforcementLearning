@@ -1,3 +1,11 @@
+# ReinforcementLearning 1.0.3
+
+# Version 1.0.3
+
+## Changes
+
+* Set `RNGversion()` due to changes to sampling mechanism
+
 # ReinforcementLearning 1.0.2
 
 # Version 1.0.2
