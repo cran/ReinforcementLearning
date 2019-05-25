@@ -9,16 +9,27 @@
 #' @param state The current state.
 #' @param action Action to be executed.
 #' @return List containing the next state and the reward.
+#' @examples
+#' # Load gridworld environment
+#' gridworld <- gridworldEnvironment
+#'
+#' # Define state and action
+#' state <- "s1"
+#' action <- "down"
+#'
+#' # Observe next state and reward
+#' gridworld(state, action)
+#'
 #' @export
 gridworldEnvironment <- function(state, action) {
   next_state <- state
-  if(state == state("s1") && action == "down") next_state <- state("s2")
-  if(state == state("s2") && action == "up") next_state <- state("s1")
-  if(state == state("s2") && action == "right") next_state <- state("s3")
-  if(state == state("s3") && action == "left") next_state <- state("s2")
-  if(state == state("s3") && action == "up") next_state <- state("s4")
+  if (state == state("s1") && action == "down") next_state <- state("s2")
+  if (state == state("s2") && action == "up") next_state <- state("s1")
+  if (state == state("s2") && action == "right") next_state <- state("s3")
+  if (state == state("s3") && action == "left") next_state <- state("s2")
+  if (state == state("s3") && action == "up") next_state <- state("s4")
 
-  if(next_state == state("s4") && state != state("s4")) {
+  if (next_state == state("s4") && state != state("s4")) {
     reward <- 10
   } else {
     reward <- -1

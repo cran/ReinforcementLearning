@@ -13,59 +13,35 @@ set.seed(0)
 ## ---- message=FALSE------------------------------------------------------
 library(ReinforcementLearning)
 
-## ---- message=FALSE------------------------------------------------------
+## ------------------------------------------------------------------------
 data("tictactoe")
 head(tictactoe, 5)
 
-## ---- message=FALSE------------------------------------------------------
-# Load exemplary environment (gridworld)
-env <- gridworldEnvironment
-print(env)
+## ---- eval=FALSE---------------------------------------------------------
+#  # Define state and action sets
+#  states <- c("s1", "s2", "s3", "s4")
+#  actions <- c("up", "down", "left", "right")
+#  
+#  env <- gridworldEnvironment
+#  
+#  # Sample N = 1000 random sequences from the environment
+#  data <- sampleExperience(N = 1000,
+#                           env = env,
+#                           states = states,
+#                           actions = actions)
 
-# Define state and action sets
-states <- c("s1", "s2", "s3", "s4")
-actions <- c("up", "down", "left", "right")
-
-# Sample N = 1000 random sequences from the environment
-data <- sampleExperience(N = 1000, env = env, states = states, actions = actions)
-head(data)
-
-## ---- message=FALSE------------------------------------------------------
-# Define reinforcement learning parameters
-control <- list(alpha = 0.1, gamma = 0.5, epsilon = 0.1)
-
-# Perform reinforcement learning
-model <- ReinforcementLearning(data, s = "State", a = "Action", r = "Reward", 
-                               s_new = "NextState", control = control)
-
-# Print result
-print(model)
-
-## ---- message=FALSE------------------------------------------------------
-# Print policy
-policy(model)
-
-## ---- message=FALSE------------------------------------------------------
-# Define reinforcement learning parameters
-control <- list(alpha = 0.1, gamma = 0.5, epsilon = 0.1)
-
-# Sample N = 1000 sequences from the environment using epsilon-greedy action selection
-data_new <- sampleExperience(N = 1000, env = env, states = states, actions = actions, 
-                             model = model, actionSelection = "epsilon-greedy", 
-                             control = control)
-head(data_new)
-
-# Update the existing policy using new training data
-model_new <- ReinforcementLearning(data_new, s = "State", a = "Action", r = "Reward", 
-                                   s_new = "NextState", control = control, model = model)
-
-# Print result
-print(model_new)
-summary(model_new)
-
-## ---- message=FALSE, fig.width=5, fig.height=3---------------------------
-# Plot reinforcement learning curve
-plot(model_new)
+## ---- eval=FALSE---------------------------------------------------------
+#  # Load dataset
+#  data("tictactoe")
+#  
+#  # Perform reinforcement learning
+#  model <- ReinforcementLearning(data = tictactoe,
+#                                 s = "State",
+#                                 a = "Action",
+#                                 r = "Reward",
+#                                 s_new = "NextState",
+#                                 iter = 1)
+#  
 
 ## ---- eval=FALSE---------------------------------------------------------
 #  # Define control object
@@ -73,6 +49,106 @@ plot(model_new)
 #  
 #  # Pass learning parameters to reinforcement learning function
 #  model <- ReinforcementLearning(data, iter = 10, control = control)
+
+## ---- eval=FALSE---------------------------------------------------------
+#  # Print policy
+#  computePolicy(model)
+#  
+#  # Print state-action table
+#  print(model)
+#  
+#  # Print summary statistics
+#  summary(model)
+
+## ---- message=FALSE------------------------------------------------------
+# Define state and action sets
+states <- c("s1", "s2", "s3", "s4")
+actions <- c("up", "down", "left", "right")
+
+## ---- message=FALSE------------------------------------------------------
+# Load built-in environment function for 2x2 gridworld 
+env <- gridworldEnvironment
+print(env)
+
+## ---- message=FALSE------------------------------------------------------
+# Sample N = 1000 random sequences from the environment
+data <- sampleExperience(N = 1000, 
+                         env = env, 
+                         states = states, 
+                         actions = actions)
+head(data)
+
+## ---- message=FALSE------------------------------------------------------
+# Define reinforcement learning parameters
+control <- list(alpha = 0.1, gamma = 0.5, epsilon = 0.1)
+
+# Perform reinforcement learning
+model <- ReinforcementLearning(data, 
+                               s = "State", 
+                               a = "Action", 
+                               r = "Reward", 
+                               s_new = "NextState", 
+                               control = control)
+
+
+## ---- message=FALSE------------------------------------------------------
+# Print policy
+computePolicy(model)
+
+# Print state-action function
+print(model)
+
+## ---- message=FALSE------------------------------------------------------
+# Print summary statistics
+summary(model)
+
+
+## ---- message=FALSE------------------------------------------------------
+# Example data
+data_unseen <- data.frame(State = c("s1", "s2", "s1"), 
+                          stringsAsFactors = FALSE)
+
+# Pick optimal action
+data_unseen$OptimalAction <- predict(model, data_unseen$State)
+
+data_unseen
+
+## ---- message=FALSE------------------------------------------------------
+# Sample N = 1000 sequences from the environment
+# using epsilon-greedy action selection
+data_new <- sampleExperience(N = 1000, 
+                             env = env, 
+                             states = states, 
+                             actions = actions, 
+                             actionSelection = "epsilon-greedy",
+                             model = model, 
+                             control = control)
+
+# Update the existing policy using new training data
+model_new <- ReinforcementLearning(data_new, 
+                                   s = "State", 
+                                   a = "Action", 
+                                   r = "Reward", 
+                                   s_new = "NextState", 
+                                   control = control,
+                                   model = model)
+
+## ---- message=FALSE, fig.width=5, fig.height=3---------------------------
+# Print result
+print(model_new)
+
+# Plot reinforcement learning curve
+plot(model_new)
+
+## ---- message=FALSE, echo=FALSE------------------------------------------
+cat("......X.B")
+
+cat("|  .  |  .  |  .   |
+|------------------|
+|  .  |  .  |  .   |
+|------------------|
+|  X  |  .  |   B  |")
+
 
 ## ---- eval=FALSE---------------------------------------------------------
 #  # Load dataset
@@ -85,6 +161,29 @@ plot(model_new)
 #  model <- ReinforcementLearning(tictactoe, s = "State", a = "Action", r = "Reward",
 #                                 s_new = "NextState", iter = 1, control = control)
 #  
-#  # Print optimal policy
-#  policy(model)
+#  # Calculate optimal policy
+#  pol <- computePolicy(model)
+#  
+#  # Print policy
+#  head(pol)
+#  
+
+## ---- message=FALSE, echo=FALSE------------------------------------------
+cat('.XXBB..XB XXBB.B.X. .XBB..BXX BXX...B.. ..XB..... XBXBXB... 
+     "c1"      "c5"      "c5"      "c4"      "c5"      "c9"')
+
+
+## ---- message=FALSE, echo=FALSE------------------------------------------
+cat("|  .  |  X  |  X   |
+|------------------|
+|  B  |  B  |  .   |
+|------------------|
+|  .  |  X  |   B  |")
+
+cat("|  c1  |  c2  |  c3   |
+|---------------------|
+|  c4  |  c5  |  c6   |
+|---------------------|
+|  c7  |  c8  |   c9  |")
+
 

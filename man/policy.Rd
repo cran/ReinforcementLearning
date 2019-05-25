@@ -2,7 +2,7 @@
 % Please edit documentation in R/policy.R
 \name{policy}
 \alias{policy}
-\title{Calculates the reinforcement learning policy}
+\title{Computes the reinforcement learning policy}
 \usage{
 policy(x)
 }
@@ -14,9 +14,7 @@ either a \code{matrix}, \code{data.frame} or an \code{\link{rl}} object.}
 Returns the learned policy.
 }
 \description{
-Calculates reinforcement learning policy from a given state-action table Q.
-The policy is the decision-making function of the agent and defines the learning
-agent's behavior at a given time.
+Deprecated. Please use [ReinforcementLearning::computePolicy()] instead.
 }
 \seealso{
 \code{\link{ReinforcementLearning}}
