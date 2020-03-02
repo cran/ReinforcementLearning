@@ -1,7 +1,7 @@
-## ---- include=FALSE------------------------------------------------------
+## ---- include=FALSE-----------------------------------------------------------
 set.seed(0)
 
-## ----eval=FALSE----------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  # install.packages("devtools")
 #  
 #  # Option 1: download and install latest version from GitHub
@@ -10,14 +10,14 @@ set.seed(0)
 #  # Option 2: install directly from bundled archive
 #  devtoos::install_local("ReinforcementLearning_1.0.0.tar.gz")
 
-## ---- message=FALSE------------------------------------------------------
+## ---- message=FALSE-----------------------------------------------------------
 library(ReinforcementLearning)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 data("tictactoe")
 head(tictactoe, 5)
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  # Define state and action sets
 #  states <- c("s1", "s2", "s3", "s4")
 #  actions <- c("up", "down", "left", "right")
@@ -30,7 +30,7 @@ head(tictactoe, 5)
 #                           states = states,
 #                           actions = actions)
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  # Load dataset
 #  data("tictactoe")
 #  
@@ -43,14 +43,14 @@ head(tictactoe, 5)
 #                                 iter = 1)
 #  
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  # Define control object
 #  control <- list(alpha = 0.1, gamma = 0.1, epsilon = 0.1)
 #  
 #  # Pass learning parameters to reinforcement learning function
 #  model <- ReinforcementLearning(data, iter = 10, control = control)
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  # Print policy
 #  computePolicy(model)
 #  
@@ -60,17 +60,17 @@ head(tictactoe, 5)
 #  # Print summary statistics
 #  summary(model)
 
-## ---- message=FALSE------------------------------------------------------
+## ---- message=FALSE-----------------------------------------------------------
 # Define state and action sets
 states <- c("s1", "s2", "s3", "s4")
 actions <- c("up", "down", "left", "right")
 
-## ---- message=FALSE------------------------------------------------------
+## ---- message=FALSE-----------------------------------------------------------
 # Load built-in environment function for 2x2 gridworld 
 env <- gridworldEnvironment
 print(env)
 
-## ---- message=FALSE------------------------------------------------------
+## ---- message=FALSE-----------------------------------------------------------
 # Sample N = 1000 random sequences from the environment
 data <- sampleExperience(N = 1000, 
                          env = env, 
@@ -78,7 +78,7 @@ data <- sampleExperience(N = 1000,
                          actions = actions)
 head(data)
 
-## ---- message=FALSE------------------------------------------------------
+## ---- message=FALSE-----------------------------------------------------------
 # Define reinforcement learning parameters
 control <- list(alpha = 0.1, gamma = 0.5, epsilon = 0.1)
 
@@ -91,19 +91,19 @@ model <- ReinforcementLearning(data,
                                control = control)
 
 
-## ---- message=FALSE------------------------------------------------------
+## ---- message=FALSE-----------------------------------------------------------
 # Print policy
 computePolicy(model)
 
 # Print state-action function
 print(model)
 
-## ---- message=FALSE------------------------------------------------------
+## ---- message=FALSE-----------------------------------------------------------
 # Print summary statistics
 summary(model)
 
 
-## ---- message=FALSE------------------------------------------------------
+## ---- message=FALSE-----------------------------------------------------------
 # Example data
 data_unseen <- data.frame(State = c("s1", "s2", "s1"), 
                           stringsAsFactors = FALSE)
@@ -113,7 +113,7 @@ data_unseen$OptimalAction <- predict(model, data_unseen$State)
 
 data_unseen
 
-## ---- message=FALSE------------------------------------------------------
+## ---- message=FALSE-----------------------------------------------------------
 # Sample N = 1000 sequences from the environment
 # using epsilon-greedy action selection
 data_new <- sampleExperience(N = 1000, 
@@ -133,14 +133,14 @@ model_new <- ReinforcementLearning(data_new,
                                    control = control,
                                    model = model)
 
-## ---- message=FALSE, fig.width=5, fig.height=3---------------------------
+## ---- message=FALSE, fig.width=5, fig.height=3--------------------------------
 # Print result
 print(model_new)
 
 # Plot reinforcement learning curve
 plot(model_new)
 
-## ---- message=FALSE, echo=FALSE------------------------------------------
+## ---- message=FALSE, echo=FALSE-----------------------------------------------
 cat("......X.B")
 
 cat("|  .  |  .  |  .   |
@@ -150,7 +150,7 @@ cat("|  .  |  .  |  .   |
 |  X  |  .  |   B  |")
 
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  # Load dataset
 #  data("tictactoe")
 #  
@@ -168,12 +168,12 @@ cat("|  .  |  .  |  .   |
 #  head(pol)
 #  
 
-## ---- message=FALSE, echo=FALSE------------------------------------------
+## ---- message=FALSE, echo=FALSE-----------------------------------------------
 cat('.XXBB..XB XXBB.B.X. .XBB..BXX BXX...B.. ..XB..... XBXBXB... 
      "c1"      "c5"      "c5"      "c4"      "c5"      "c9"')
 
 
-## ---- message=FALSE, echo=FALSE------------------------------------------
+## ---- message=FALSE, echo=FALSE-----------------------------------------------
 cat("|  .  |  X  |  X   |
 |------------------|
 |  B  |  B  |  .   |

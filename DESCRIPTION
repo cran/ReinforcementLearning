@@ -1,8 +1,8 @@
 Package: ReinforcementLearning
 Type: Package
 Title: Model-Free Reinforcement Learning
-Version: 1.0.4
-Date: 2019-05-24
+Version: 1.0.5
+Date: 2020-03-02
 Authors@R: c(person("Nicolas", "Proellochs", email="nicolas.proellochs@wi.jlug.de",
                     role=c("aut", "cre")),
              person("Stefan", "Feuerriegel", email="sfeuerriegel@ethz.ch",
@@ -21,8 +21,8 @@ Encoding: UTF-8
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2019-05-24 23:54:10 UTC; nproe
+Packaged: 2020-03-02 01:20:42 UTC; nproe
 Author: Nicolas Proellochs [aut, cre],
   Stefan Feuerriegel [aut]
 Repository: CRAN
-Date/Publication: 2019-05-25 10:20:03 UTC
+Date/Publication: 2020-03-02 06:00:15 UTC
